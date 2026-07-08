@@ -1,0 +1,54 @@
+.DS_Store
+
+Build directories
+
+build/
+Build/
+cmake-build-*/
+
+CMake
+
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+
+Generated Makefiles
+
+Makefile
+!Makefile.posix
+!Makefile.cocotron
+
+Ninja
+
+.ninja_*
+build.ninja
+
+Xcode
+
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+
+Visual Studio Code
+
+.vscode/
+
+CLion
+
+.idea/
+
+Vim
+
+*.swp
+*.swo
+
+Temporary files
+
+*.tmp
+*.bak
+*~
