@@ -91,10 +91,10 @@ int TFLCSConnectionHasConnectedClient(TFLCSLocalConnection_t* connection);
 
 // tries to determine the key for the shared memory region used by the Flash LocalConnection
 // returns a pointer to static memory on success, NULL on error.
-void* TFLCSGuessShmemKey();
+void* TFLCSGuessShmemKey(void);
 
 // get the current tick count (milliseconds since the system was started)
-u_int32_t TFLCSGetTickCount();
+u_int32_t TFLCSGetTickCount(void);
 
 // write an AMF3-encoded integer into a buffer
 // returns the updated buffer position

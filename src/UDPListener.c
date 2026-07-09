@@ -25,7 +25,7 @@ typedef char SoFlag_t;
 typedef int SoFlag_t;
 #endif
 
-UDPListener* UDPListenerCreate()
+UDPListener* UDPListenerCreate(void)
 {
    return UDPListenerCreateWithPort(0);
 }

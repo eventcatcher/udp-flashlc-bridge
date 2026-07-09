@@ -269,7 +269,7 @@ int TFLCSGetConnectedConnectionNames(TFLCSLocalConnection_t* connection, char* d
 	return retval;
 }
 
-void* TFLCSGuessShmemKey()
+void* TFLCSGuessShmemKey(void)
 {
 #if defined(WINDOWS)
 	return (void*)WINDOWS_SHMEM_NAME;
@@ -313,7 +313,7 @@ void* TFLCSGuessShmemKey()
 #endif
 }
 
-u_int32_t TFLCSGetTickCount()
+u_int32_t TFLCSGetTickCount(void)
 {
 #if defined(WINDOWS)
 	return (u_int32_t)GetTickCount();

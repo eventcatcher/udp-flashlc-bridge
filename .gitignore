@@ -52,3 +52,15 @@ Temporary files
 *.tmp
 *.bak
 *~
+
+# Build products
+udp-flashlc-bridge
+*.o
+*.dSYM/
+
+# CMake
+build/
+Build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt

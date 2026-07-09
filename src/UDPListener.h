@@ -23,7 +23,7 @@ typedef struct UDPListener {
    UDPListenerPacketCallback  packetCallback;
 } UDPListener;
 
-UDPListener* UDPListenerCreate();
+UDPListener* UDPListenerCreate(void);
 UDPListener* UDPListenerCreateWithPort(uint16_t port);
 void UDPListenerRelease(UDPListener* udpListener);
 
