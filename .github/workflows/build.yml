@@ -2,17 +2,23 @@ name: Build
 
 on:
   push:
+    branches:
+      - main
+      - master
+
   pull_request:
 
 jobs:
   macos:
+    name: macOS
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure
-        run: cmake -B build
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: cmake --build build
