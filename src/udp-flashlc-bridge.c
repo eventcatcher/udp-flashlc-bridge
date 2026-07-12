@@ -47,6 +47,42 @@ static void LogMessage(logLevel_t level, const char* format, ...)
    fprintf(stderr, "\n");
 }
 
+static void DumpPacket(const uint8_t* packet, uint32_t length)
+{
+   uint32_t i;
+
+   for (i = 0; i < length; i += 16) {
+
+      char hex[16 * 3 + 1];
+      char ascii[16 + 1];
+
+      memset(hex, ' ', sizeof(hex));
+      hex[sizeof(hex)-1] = 0;
+
+      memset(ascii, ' ', sizeof(ascii));
+      ascii[16] = 0;
+
+      uint32_t j;
+      for (j = 0; j < 16 && (i + j) < length; j++) {
+
+         uint8_t b = packet[i + j];
+
+         sprintf(&hex[j * 3], "%02X ", b);
+
+         ascii[j] =
+            (b >= 32 && b < 127)
+            ? (char)b
+            : '.';
+      }
+
+      LogMessage(LogLevelVerbose,
+                 "%04X  %-48s %s",
+                 i,
+                 hex,
+                 ascii);
+   }
+}
+
 void HandleUDPPacketReceived(const uint8_t* packet,
                              uint32_t packetLength,
                              const char* sourceAddress,
@@ -168,6 +204,7 @@ void HandleUDPPacketReceived(const uint8_t* packet,
 {
    if (logLevel >= LogLevelVerbose) {
       LogMessage(LogLevelVerbose, "Received %u bytes from %s:%u", packetLength, sourceAddress, sourcePort);
+      DumpPacket(packet, packetLength);
    }
    
    // Flash 10 seems not to be able to keep up with very fast rates sometimes?
