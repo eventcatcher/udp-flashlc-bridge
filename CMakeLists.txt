@@ -73,6 +73,17 @@ if(APPLE)
 endif()
 
 #
+# POSIX feature macros
+#
+if(UNIX AND NOT APPLE)
+
+    target_compile_definitions(udp-flashlc-bridge PRIVATE
+        _POSIX_C_SOURCE=200809L
+    )
+
+endif()
+
+#
 # Platform specific libraries
 #
 if(WIN32)

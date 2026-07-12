@@ -64,6 +64,7 @@ jobs:
           cmake
           --build build
           --config Release
+          --verbose
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
