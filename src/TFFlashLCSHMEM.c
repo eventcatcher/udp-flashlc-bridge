@@ -33,6 +33,8 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/time.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #if defined(__APPLE__)
 #include <mach/mach.h>
