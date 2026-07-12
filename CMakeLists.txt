@@ -51,6 +51,11 @@ if(MSVC)
         /W4
     )
 
+    target_compile_definitions(
+        udp-flashlc-bridge PRIVATE
+        _CRT_SECURE_NO_WARNINGS
+    )
+
 else()
 
     target_compile_options(udp-flashlc-bridge PRIVATE

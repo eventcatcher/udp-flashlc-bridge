@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/time.h>
@@ -105,7 +105,7 @@ TFLCSLocalConnection_t* TFLCSConnect(const char* listenerName,
 
 	connection->open = 0;
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	// initialize the structure
 	connection->semaphore = NULL;
 	connection->mapFile = NULL;
@@ -181,7 +181,7 @@ errorReturn:
 void TFLCSDisconnect(TFLCSLocalConnection_t* connection)
 {
 	if (NULL != connection) {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 		if (NULL != connection->semaphore)
 			CloseHandle(connection->semaphore);
 		
@@ -273,7 +273,7 @@ int TFLCSGetConnectedConnectionNames(TFLCSLocalConnection_t* connection, char* d
 
 void* TFLCSGuessShmemKey(void)
 {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	return (void*)WINDOWS_SHMEM_NAME;
 #else
 	static int found = 0;
@@ -317,7 +317,7 @@ void* TFLCSGuessShmemKey(void)
 
 u_int32_t TFLCSGetTickCount(void)
 {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	return (u_int32_t)GetTickCount();
 #elif defined(__APPLE__)
 	static mach_timebase_info_data_t timeBase;
@@ -527,7 +527,7 @@ void TFLCSDumpMemory(char* buffer, int offset, int size)
 void _TFLCSLockSemaphore(TFLCSLocalConnection_t* connection)
 {
 	if (NULL != connection) {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 		if (NULL != connection->semaphore)
 			WaitForSingleObject(connection->semaphore, INFINITE);
 #else
@@ -540,7 +540,7 @@ void _TFLCSLockSemaphore(TFLCSLocalConnection_t* connection)
 void _TFLCSUnlockSemaphore(TFLCSLocalConnection_t* connection)
 {
 	if (NULL != connection) {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 		if (NULL != connection->semaphore)
 			ReleaseMutex(connection->semaphore);
 #else
@@ -554,7 +554,7 @@ int _TFLCSConnectionStructureIsValidForUse(TFLCSLocalConnection_t* connection)
 {
 	return 	(NULL != connection
 		&& 0 != connection->open
-#if defined(WINDOWS)
+#if defined(_WIN32)
 		&& NULL != connection->semaphore
 		&& NULL != connection->mapFile
 		&& NULL != connection->mapAddress
@@ -568,7 +568,7 @@ int _TFLCSConnectionStructureIsValidForUse(TFLCSLocalConnection_t* connection)
 
 int _TFLCSDelayedConnect(TFLCSLocalConnection_t* connection)
 {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	if (NULL == connection)
 		return 0;
 	if (connection->open)

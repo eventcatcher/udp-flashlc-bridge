@@ -3,10 +3,21 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#if defined(_WIN32)
+
+#include <io.h>
+
+#else
+
 #include <unistd.h>
+
 #if defined(__linux__)
 #include <getopt.h>
 #endif
+
+#endif
+
 #include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
@@ -155,7 +166,7 @@ int main(int argc, char** argv)
       );
    }
    
-#if defined(WINDOWS)
+#if defined(_WIN32)
    WSADATA wsaData;
    WSAStartup(MAKEWORD(2, 0), &wsaData);
 #endif

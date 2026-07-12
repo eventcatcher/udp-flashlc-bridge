@@ -2,10 +2,24 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
+#if defined(_WIN32)
+
+#include <io.h>
+
+#else
+
 #include <unistd.h>
+
+#if defined(__linux__)
+#include <getopt.h>
+#endif
+
+#endif
+
 #include <string.h>
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include <winsock.h>
 typedef int socklen_t;
 #else
@@ -19,7 +33,7 @@ typedef int socklen_t;
 
 #define RECVBUF_LEN  (65535)
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 typedef char SoFlag_t;
 #else
 typedef int SoFlag_t;
@@ -128,7 +142,7 @@ void UDPListenerWaitForPacket(UDPListener* udpListener)
          addrLen = (socklen_t)sizeof(struct sockaddr);
          
          bytesReceived = recvfrom(udpListener->socket,
-#if defined(WINDOWS)
+#if defined(_WIN32)
                                   (char*)udpListener->recvBuf,
 #else
                                   udpListener->recvBuf,

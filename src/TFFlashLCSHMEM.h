@@ -25,7 +25,7 @@
 #if !defined(__TFFlashLCSHMEM_H__)
 #define __TFFlashLCSHMEM_H__ 1
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include <windows.h>
 
 typedef	DWORD u_int32_t;
@@ -39,7 +39,7 @@ typedef	DWORD u_int32_t;
 #define TFLCS_LISTENER_METHOD_MAX_LEN	(64)
 
 typedef struct TFLCSLocalConnection_t {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	HANDLE	semaphore;
 	HANDLE	mapFile;
 	LPVOID	mapAddress;	
