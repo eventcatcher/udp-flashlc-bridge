@@ -13,6 +13,7 @@ add_executable(udp-flashlc-bridge
     src/udp-flashlc-bridge.c
     src/UDPListener.c
     src/TFFlashLCSHMEM.c
+    src/TuioDecoder.c
 )
 
 target_compile_options(udp-flashlc-bridge PRIVATE
