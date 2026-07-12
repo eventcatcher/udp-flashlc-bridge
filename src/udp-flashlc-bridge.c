@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "UDPListener.h"
 #include "TFFlashLCSHMEM.h"
@@ -23,6 +24,28 @@ typedef enum logLevel_t {
 
 static logLevel_t logLevel = LogLevelInfo;
 static TFLCSLocalConnection_t* lcConnection;
+
+static void LogMessage(logLevel_t level, const char* format, ...)
+{
+   if (level > logLevel)
+      return;
+
+   static const char* levelNames[] = {
+      "",
+      "ERROR",
+      "INFO",
+      "DEBUG"
+   };
+
+   fprintf(stderr, "[%s] ", levelNames[level]);
+
+   va_list args;
+   va_start(args, format);
+   vfprintf(stderr, format, args);
+   va_end(args);
+
+   fprintf(stderr, "\n");
+}
 
 void HandleUDPPacketReceived(const uint8_t* packet,
                              uint32_t packetLength,
@@ -102,19 +125,19 @@ int main(int argc, char** argv)
    
    if (NULL == udpListener) {
       if (logLevel >= LogLevelErrors)
-         fprintf(stderr, "UDPListener creation: out of memory.\n");
+         LogMessage(LogLevelErrors, "UDPListener creation: out of memory.");
       exit(-1);
    }
    
    if (!UDPListenerIsValid(udpListener)) {
       if (logLevel >= LogLevelErrors)
-         fprintf(stderr, "UDPListener: %s\n",
+         LogMessage(LogLevelErrors, "UDPListener: %s",
             UDPListenerStringForError(udpListener->lastError));
       exit(-1);
    }
    
    if (logLevel >= LogLevelInfo) {
-      printf("Listening for UDP at port %d...\n", udpListener->port);
+      LogMessage(LogLevelInfo,"Listening for UDP at port %d.", udpListener->port);
    }
    
    UDPListenerSetPacketReceiptCallback(udpListener, &HandleUDPPacketReceived);
@@ -126,7 +149,7 @@ int main(int argc, char** argv)
                                NULL);
    
    if (logLevel >= LogLevelInfo) {
-      printf("Serving to Flash via LocalConnection at %s:%s\n", lcConnName, lcMethName);
+      LogMessage(LogLevelInfo,"Serving to Flash via LocalConnection at %s:%s", lcConnName, lcMethName);
    }
    
    free(lcConnName);
@@ -144,7 +167,7 @@ void HandleUDPPacketReceived(const uint8_t* packet,
                              uint16_t sourcePort)
 {
    if (logLevel >= LogLevelVerbose) {
-      printf("Received %d bytes from %s:%d...\n", packetLength, sourceAddress, sourcePort);
+      LogMessage(LogLevelVerbose, "Received %u bytes from %s:%u", packetLength, sourceAddress, sourcePort);
    }
    
    // Flash 10 seems not to be able to keep up with very fast rates sometimes?
@@ -156,6 +179,8 @@ void HandleUDPPacketReceived(const uint8_t* packet,
    if (t++ % 3)
       return;*/
       
-   if (TFLCSConnectionHasConnectedClient(lcConnection))
+   if (TFLCSConnectionHasConnectedClient(lcConnection)) {
       TFLCSSendByteArray(lcConnection, (char*)packet, packetLength);
+      LogMessage(LogLevelVerbose, "Forwarded %u bytes to Flash.", packetLength);
+   }
 }
