@@ -10,6 +10,7 @@
 
 #include "UDPListener.h"
 #include "TFFlashLCSHMEM.h"
+#include "TuioDecoder.h"
 
 #define  DEFAULT_UDP_PORT        (3333)
 #define  DEFAULT_LC_CONN_NAME    ((char*)"_OscDataStream")
@@ -80,6 +81,59 @@ static void DumpPacket(const uint8_t* packet, uint32_t length)
                  i,
                  hex,
                  ascii);
+   }
+}
+
+static void LogTuioFrame(const TuioFrame* frame)
+{
+   int i;
+
+   LogMessage(LogLevelVerbose,
+              "TUIO /tuio/2Dcur: frame=%d source=%s alive=%d touches=%d",
+              frame->frame,
+              frame->source[0] ? frame->source : "(none)",
+              frame->aliveCount,
+              frame->touchCount);
+
+   if (frame->aliveCount > 0) {
+      char aliveList[512];
+      int offset = 0;
+
+      aliveList[0] = 0;
+
+      for (i = 0; i < frame->aliveCount; i++) {
+         int written = snprintf(aliveList + offset,
+                                sizeof(aliveList) - (size_t)offset,
+                                "%s%d",
+                                (i == 0) ? "" : ", ",
+                                frame->aliveIds[i]);
+
+         if (written < 0)
+            break;
+
+         if ((size_t)written >= sizeof(aliveList) - (size_t)offset) {
+            offset = (int)sizeof(aliveList) - 1;
+            break;
+         }
+
+         offset += written;
+      }
+
+      LogMessage(LogLevelVerbose, "  alive session ids: %s", aliveList);
+   }
+
+   for (i = 0; i < frame->touchCount; i++) {
+      const TuioTouch* touch = &frame->touches[i];
+
+      LogMessage(LogLevelVerbose,
+                 "  touch #%d: session=%d pos=(%.4f, %.4f) velocity=(%.4f, %.4f) motionAccel=%.4f",
+                 i + 1,
+                 touch->sessionId,
+                 touch->x,
+                 touch->y,
+                 touch->dx,
+                 touch->dy,
+                 touch->motionAccel);
    }
 }
 
@@ -203,8 +257,16 @@ void HandleUDPPacketReceived(const uint8_t* packet,
                              uint16_t sourcePort)
 {
    if (logLevel >= LogLevelVerbose) {
+      TuioFrame frame;
+
       LogMessage(LogLevelVerbose, "Received %u bytes from %s:%u", packetLength, sourceAddress, sourcePort);
-      DumpPacket(packet, packetLength);
+
+      if (TuioDecodePacket(packet, packetLength, &frame)) {
+         LogTuioFrame(&frame);
+      } else {
+         LogMessage(LogLevelVerbose, "Packet is not recognized as TUIO; dumping raw bytes.");
+         DumpPacket(packet, packetLength);
+      }
    }
    
    // Flash 10 seems not to be able to keep up with very fast rates sometimes?

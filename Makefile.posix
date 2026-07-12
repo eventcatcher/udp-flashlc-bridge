@@ -5,7 +5,7 @@ MACROS	=
 
 all: udp-flashlc-bridge
 
-udp-flashlc-bridge: src/udp-flashlc-bridge.c src/TFFlashLCSHMEM.c src/UDPListener.c
+udp-flashlc-bridge: src/udp-flashlc-bridge.c src/TFFlashLCSHMEM.c src/UDPListener.c src/TuioDecoder.c
 	$(CC) $(CFLAGS) $(MACROS) $^ -o $@ $(LIBS)
 
 clean:
