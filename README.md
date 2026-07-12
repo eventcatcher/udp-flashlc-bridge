@@ -130,8 +130,52 @@ Current topics include:
 - AMF serialization
 - Connection lifecycle
 - Reverse engineering notes
+- Screenshots
 
 The goal is to document the implementation thoroughly enough that it can be understood without reading the source code.
+
+---
+
+## Shell scripts
+
+start without detailed logging (or via doubleclick): 
+```bash
+./scripts/run.sh
+```
+start with detailed logging (verbose): 
+```bash
+./scripts/run-verbose.sh
+```
+
+---
+
+## Example Log (Verbose Mode)
+
+```lang-sh
+UDP listening port: 3333
+Log Level: 3
+[INFO] Listening for UDP at port 3333.
+[INFO] Serving to Flash via LocalConnection at _OscDataStream:receiveOscData
+[DEBUG] Received 132 bytes from 127.0.0.1:60889
+[DEBUG] TUIO /tuio/2Dcur: frame=6142 source=upddcommander@192.168.0.38 alive=0 touches=0
+[DEBUG] Forwarded 132 bytes to Flash.
+[DEBUG] Received 132 bytes from 127.0.0.1:65188
+[DEBUG] TUIO /tuio/2Dcur: frame=6150 source=upddcommander@192.168.0.38 alive=0 touches=0
+[DEBUG] Forwarded 132 bytes to Flash.
+[DEBUG] Received 192 bytes from 127.0.0.1:60889
+[DEBUG] TUIO /tuio/2Dcur: frame=6234 source=upddcommander@192.168.0.38 alive=1 touches=1
+[DEBUG]   alive session ids: 2
+[DEBUG]   touch #1: session=2 pos=(0.4789, 0.5812) velocity=(0.0000, 0.0000) motionAccel=0.0000
+[DEBUG] Forwarded 192 bytes to Flash.
+[DEBUG] Received 376 bytes from 127.0.0.1:60889
+[DEBUG] TUIO /tuio/2Dcur: frame=6235 source=upddcommander@192.168.0.38 alive=4 touches=4
+[DEBUG]   alive session ids: 4, 2, 3, 5
+[DEBUG]   touch #1: session=4 pos=(0.1592, 0.6415) velocity=(0.8130, -0.8023) motionAccel=50.0421
+[DEBUG]   touch #2: session=2 pos=(0.5214, 0.5411) velocity=(1.7994, -1.6960) motionAccel=104.7404
+[DEBUG]   touch #3: session=3 pos=(0.6672, 0.7700) velocity=(1.0403, -1.8069) motionAccel=89.6787
+[DEBUG]   touch #4: session=5 pos=(0.2894, 0.6645) velocity=(1.0705, -0.9742) motionAccel=63.4248
+[DEBUG] Forwarded 376 bytes to Flash.
+```
 
 ---
 
