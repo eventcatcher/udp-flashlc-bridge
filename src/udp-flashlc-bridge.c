@@ -7,6 +7,7 @@
 #if defined(_WIN32)
 
 #include <io.h>
+#include "platform/getopt.h"
 
 #else
 

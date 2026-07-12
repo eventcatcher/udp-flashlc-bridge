@@ -5,7 +5,7 @@ MACROS	= -DWINDOWS
 
 all: udp-flashlc-bridge-win
 
-udp-flashlc-bridge-win: src/udp-flashlc-bridge.c src/TFFlashLCSHMEM.c src/UDPListener.c
+udp-flashlc-bridge-win: src/udp-flashlc-bridge.c src/TFFlashLCSHMEM.c src/UDPListener.c src/platform/getopt.c
 	$(CC) $(CFLAGS) $(MACROS) $^ -o $@ $(LIBS)
 
 clean:

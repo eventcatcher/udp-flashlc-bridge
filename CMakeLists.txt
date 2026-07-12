@@ -34,6 +34,12 @@ add_executable(udp-flashlc-bridge
     src/TuioDecoder.c
 )
 
+if(WIN32)
+    target_sources(udp-flashlc-bridge PRIVATE
+        src/platform/getopt.c
+    )
+endif()
+
 #
 # Include directories
 #
