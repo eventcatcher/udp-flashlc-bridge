@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 
-#define TUIO_MAX_TOUCHES 32
+#define TUIO_MAX_TOUCHES     32
+#define TUIO_MAX_SOURCE_LEN  64
 
 typedef struct
 {
@@ -21,7 +22,7 @@ typedef struct
 
 typedef struct
 {
-    char source[64];
+    char source[TUIO_MAX_SOURCE_LEN];
 
     int frame;
 
