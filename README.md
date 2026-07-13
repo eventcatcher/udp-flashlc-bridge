@@ -8,6 +8,19 @@ This repository preserves the original implementation, restores the build system
 
 ---
 
+## Supported Platforms
+
+| Platform | Status |
+|----------|--------|
+| macOS Apple Silicon | ✅ |
+| macOS Intel | ✅ |
+| Windows x64 | ✅ |
+| Windows ARM64 | ✅ |
+| Linux x64 | ✅ |
+| Linux ARM64 | ✅ |
+
+---
+
 ## Project Philosophy
 
 This project is **not a rewrite**.
