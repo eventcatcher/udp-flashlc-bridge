@@ -34,10 +34,9 @@ jobs:
             os: ubuntu-latest
             artifact: linux-x86_64
 
-          # Enable again once ARM runners are available
-          # - name: Ubuntu ARM64
-          #   os: ubuntu-24.04-arm
-          #   artifact: linux-arm64
+          - name: Ubuntu ARM64
+            os: ubuntu-24.04-arm
+            artifact: linux-arm64
 
           - name: Windows x64
             os: windows-latest
