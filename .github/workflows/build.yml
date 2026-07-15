@@ -44,7 +44,7 @@ jobs:
 
           - name: Windows ARM64
             os: windows-11-arm
-            artifact: windows-x64
+            artifact: windows-arm64
 
     runs-on: ${{ matrix.os }}
 
